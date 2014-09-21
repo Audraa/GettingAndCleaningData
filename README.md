@@ -30,7 +30,10 @@ subject_train <-  read.table("./train/subject_train.txt", header= FALSE,sep="")
 	y_test <- read.table("./test/y_test.txt", header= FALSE,sep="")
 	subject_test <-read.table("./test/subject_test.txt", header= FALSE,sep="")
 
-###Column Names
+###Column Names	
+#4. Appropriately labels the data set with descriptive variable names.  Doing
+#this here as it is easier to relabel before merging all datassets
+
 Give columns names to the activity label as this will be used in the final result. 
 names(activity_labels)<- c("id","activity_description")
 The feature file contains the names to the x datasets for both training and test.
@@ -73,33 +76,50 @@ create a character vetor of the two character lists
 	meand_std<- subset(all_data, select =colnames)
 
 
-###3. Use descriptive activity names to name the activities in the data set.
-	  This was done above. Some more data merging is done here by activity so the activity description can 
-	  be included in the data.
-	  
+###3. Uses descriptive activity names to name the activities in the data set
 	mergedata <- merge(meand_std,activity_labels,by.x="activity",by.y="id",all=TRUE)
 
 
+get a data set and remove the acitvity ie 1,2,3... we now have the acitivity
+description
 	all_data2 <- select (mergedata, -activity)
 
 
 ### 5 From the data set in step 4, creates a second, independent tidy data set
 ### with the average of each variable for each activity and each subject.
-###activity,subject, avg()
+### final result will be activity,subject,variable, avg()
 
 Every column contains a different variable
-The gather funcion in the tydr package is used to tidy up the data a bit more.
+The features are measures a bit like grades and should be in a column called features
+we use the gather funcion in the tydr package
 
 
-res<-gather(all_data2,feature,"mean_std",-subject,-activity_description)
+	res<-gather(all_data2,feature,"mean_std",-subject,-activity_description)
 
-keeping it simple for the project summarise the data grouping by subject activity description and feature.
-summ<-summarize(res,group_by(res,subject,activity_description,feature),aVERAGE =mean(as.numeric(mean_std)))
-
-
-summ<-group_by(res,subject,activity_description,feature,mean(mean_std))
-
-write final data to a file called finaldata.txt
-write.table(summ,file="finaldata.txt",sep=" ",col.names= TRUE,row.names= FALSE)
+Ensure the mean_std column is  numeric.
+	  res$mean_std <- as.numeric(res$mean_std)
+	  
+	  sqldf() # open a connection
+	  
+	  summ<-sqldf("select subject,activity_description,feature,avg(mean_std) from res  group by subject,activity_description,feature ")
 
 
+##write final data to a file called finaldata.txt
+	write.table(summ,file="finaldata.txt",sep=" ",col.names= FALSE,row.names= FALSE)
+
+removed unwanted variables
+	  rm(meand_std)
+	  rm(all_data)
+	  rm(mergedata)
+	  rm(all_data2)
+	  rm(all_train)
+	  rm(all_test)
+	  rm(x_test)
+	  rm(x_train)
+	  rm(y_test)
+	  rm(y_train)
+	  rm(subject_test)
+	  rm(subject_train)
+	  rm(activity_labels)
+	  rm(feature)
+	  rm(res)
