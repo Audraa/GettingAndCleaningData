@@ -1,4 +1,4 @@
-###Description
+#Description
 The readme file decribes the steps taking to tidy and produce a subset for data for the project.
 
 This files assume a certain file structure. Ensure you are in the working directory that has the extracte files.
@@ -6,7 +6,7 @@ this is the directory "..\UCI HAR Dataset" . This folder has the "Test" and "Tra
 
 setwd("xx\\UCI HAR Dataset") here xx is the full path missing for the working directory.
 
-##Packages used
+#Packages used
 library(dplyr)
 library(tidyr)
 library(sqldf)
@@ -15,24 +15,24 @@ please run the install.packages("dplyr")  and install.packages("tidyr") and also
 load the libary so it is available for use in the application
 library(dplyr)
 
-###Read in files.
+#Read In Text Files
 ## Activity and feature files.
 activity_labels <- read.table("./activity_labels.txt",header= FALSE,sep="", colClasses = "character")
 feature <- read.table("./features.txt", header= FALSE,sep="", colClasses = "character")
 
-##Trainining files
+##Read Trainining files
 x_train <- read.table("./train/x_train.txt", header= FALSE,sep="")
 y_train <-  read.table("./train/y_train.txt", header= FALSE,sep="")
 subject_train <-  read.table("./train/subject_train.txt", header= FALSE,sep="")
 
-##Test files
+##Read Test Files
 	x_test <- read.table("./test/x_test.txt", header= FALSE,sep="")
 	y_test <- read.table("./test/y_test.txt", header= FALSE,sep="")
 	subject_test <-read.table("./test/subject_test.txt", header= FALSE,sep="")
 
-###Column Names	
-#4. Appropriately labels the data set with descriptive variable names.  Doing
-#this here as it is easier to relabel before merging all datassets
+#Column Names	
+##4. Appropriately labels the data set with descriptive variable names.  Doing
+##this here as it is easier to relabel before merging all datassets
 
 Give columns names to the activity label as this will be used in the final result. 
 names(activity_labels)<- c("id","activity_description")
@@ -80,7 +80,7 @@ create a character vetor of the two character lists
 	mergedata <- merge(meand_std,activity_labels,by.x="activity",by.y="id",all=TRUE)
 
 
-get a data set and remove the acitvity ie 1,2,3... we now have the acitivity
+Get a data set and remove the acitvity ie 1,2,3... we now have the acitivity
 description
 	all_data2 <- select (mergedata, -activity)
 
@@ -107,7 +107,7 @@ Ensure the mean_std column is  numeric.
 ##write final data to a file called finaldata.txt
 	write.table(summ,file="finaldata.txt",sep=" ",col.names= FALSE,row.names= FALSE)
 
-removed unwanted variables
+##Removed unwanted variables
 	  rm(meand_std)
 	  rm(all_data)
 	  rm(mergedata)
