@@ -7,10 +7,11 @@ this is the directory "..\UCI HAR Dataset" . This folder has the "Test" and "Tra
 setwd("xx\\UCI HAR Dataset") here xx is the full path missing for the working directory.
 
 ##Packages used
-dplyr
+library(dplyr)
 library(tidyr)
+library(sqldf)
 
-please run the install.packages("dplyr")  and install.packages("tidyr") if  not they are not in your library list.
+please run the install.packages("dplyr")  and install.packages("tidyr") and also for sqldf ,if  not they are not in your library list.
 load the libary so it is available for use in the application
 library(dplyr)
 
@@ -86,19 +87,19 @@ create a character vetor of the two character lists
 ### with the average of each variable for each activity and each subject.
 ###activity,subject, avg()
 
-#Every column contains a different variable
-#The gather funcion in the tydr package is used to tidy up the data a bit more.
+Every column contains a different variable
+The gather funcion in the tydr package is used to tidy up the data a bit more.
 
 
 res<-gather(all_data2,feature,"mean_std",-subject,-activity_description)
 
-#keeping it simple for the project summarise the data grouping by subject activity description and feature.
+keeping it simple for the project summarise the data grouping by subject activity description and feature.
 summ<-summarize(res,group_by(res,subject,activity_description,feature),aVERAGE =mean(as.numeric(mean_std)))
 
 
 summ<-group_by(res,subject,activity_description,feature,mean(mean_std))
 
-##write final data to a file called finaldata.txt
+write final data to a file called finaldata.txt
 write.table(summ,file="finaldata.txt",sep=" ",col.names= TRUE,row.names= FALSE)
 
 

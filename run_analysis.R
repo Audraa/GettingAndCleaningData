@@ -52,6 +52,7 @@ meand_std<- subset(all_data, select =colnames)
 mergedata <- merge(meand_std,activity_labels,by.x="activity",by.y="id",all=TRUE)
 
 all_data2 <- select (mergedata, -activity)
+all_data2$mean_std <- as.numeric(all_data2$mean_std)
 
 
 # 5 From the data set in step 4, creates a second, independent tidy data set
@@ -65,14 +66,15 @@ install.packages("tidyr")
 library(tidyr)
 
 res<-gather(all_data2,feature,"mean_std",-subject,-activity_description)
+library(sqldf)
 
-#keeping it simple for the project summarise the data grouping by subject activity description and feature.
-summ<-summarize(res,group_by(res,subject,activity_description,feature),aVERAGE =mean(as.numeric(mean_std)))
+sqldf() # open a connection
+
+summ<-sqldf("select subject,activity_description,feature,avg(mean_std) from res  group by subject,activity_description,feature ")
 
 
-summ<-group_by(res,subject,activity_description,feature,mean(mean_std))
 
 ##write final data to a file called finaldata.txt
-write.table(summ,file="finaldata.txt",sep=" ",col.names= TRUE,row.names= FALSE)
+write.table(summ,file="finaldata.txt",sep=" ",col.names= FALSE,row.names= FALSE)
 
 
