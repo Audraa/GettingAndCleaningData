@@ -16,7 +16,7 @@ load the libary so it is available for use in the application
 library(dplyr)
 
 #Read In Text Files
-## Activity and feature files.
+## Activity & Feature Files
 activity_labels <- read.table("./activity_labels.txt",header= FALSE,sep="", colClasses = "character")
 feature <- read.table("./features.txt", header= FALSE,sep="", colClasses = "character")
 
@@ -31,8 +31,8 @@ subject_train <-  read.table("./train/subject_train.txt", header= FALSE,sep="")
 	subject_test <-read.table("./test/subject_test.txt", header= FALSE,sep="")
 
 #Column Names	
-##4. Appropriately labels the data set with descriptive variable names.  Doing
-##this here as it is easier to relabel before merging all datassets
+##4. Appropriately labels the data set with descriptive variable names.  
+	Doing this here as it is easier to relabel before merging all datassets
 
 Give columns names to the activity label as this will be used in the final result. 
 names(activity_labels)<- c("id","activity_description")
@@ -49,7 +49,7 @@ Rename the subject training data column subject
 	names(subject_test)<- c("subject")
 
 
-###Merging data
+#Merging data
 
 First the training data is bound together using the cbind and then the test data is bound using cbind.
 	all_train <-cbind(x_train,y_train,subject_train)
@@ -57,20 +57,24 @@ First the training data is bound together using the cbind and then the test data
 
 
 Now the columns are all in place we can merge the training and test data using rbind.
-## append the x data together
-all_data<- rbind(all_train,all_test)
 
-### Extracts only the measurements on the mean and standard deviation for each measurement.
+	all_data<- rbind(all_train,all_test)
+
+### Extract only the measurements on the mean and standard deviation for each measurement.
+
 We now have all the data, we want to only extract the mean and standard deviation for all activities.
 so we are looking for title where the mean() or std()
 
 Get a list of all the mean column names
+
 	meancolnames <- grep("mean",feature$V2,value = TRUE)
 
 Get the list of all the std column names
+
 	stdcolnames<- grep("std",feature$V2,value = TRUE)
 
 create a character vetor of the two character lists
+
 	colnames <-c("subject","activity",meancolnames,stdcolnames)
  
 	meand_std<- subset(all_data, select =colnames)
@@ -82,6 +86,7 @@ create a character vetor of the two character lists
 
 Get a data set and remove the acitvity ie 1,2,3... we now have the acitivity
 description
+
 	all_data2 <- select (mergedata, -activity)
 
 
@@ -97,6 +102,7 @@ we use the gather funcion in the tydr package
 	res<-gather(all_data2,feature,"mean_std",-subject,-activity_description)
 
 Ensure the mean_std column is  numeric.
+
 	  res$mean_std <- as.numeric(res$mean_std)
 	  
 	  sqldf() # open a connection
@@ -105,21 +111,37 @@ Ensure the mean_std column is  numeric.
 
 
 ##write final data to a file called finaldata.txt
+
 	write.table(summ,file="finaldata.txt",sep=" ",col.names= FALSE,row.names= FALSE)
 
 ##Removed unwanted variables
+
 	  rm(meand_std)
+	  
 	  rm(all_data)
+	  
 	  rm(mergedata)
+	  
 	  rm(all_data2)
+	  
 	  rm(all_train)
+	  
 	  rm(all_test)
+	  
 	  rm(x_test)
+	  
 	  rm(x_train)
+	  
 	  rm(y_test)
+	  
 	  rm(y_train)
+	  
 	  rm(subject_test)
+	  
 	  rm(subject_train)
+	  
 	  rm(activity_labels)
+	  
 	  rm(feature)
+	  
 	  rm(res)
