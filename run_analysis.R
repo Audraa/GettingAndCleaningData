@@ -92,7 +92,7 @@ mergedata <- merge(meand_std,activity_labels,by.x="activity",by.y="id",all=TRUE)
 
 
 ##write final data to a file called finaldata.txt
-  write.table(summ,file="finaldata.txt",sep=" ",col.names= FALSE,row.names= FALSE)
+  write.table(summ,file="finaldata.txt",sep=" ",row.names= FALSE)
 
 #removed unwanted variables
   rm(meand_std)

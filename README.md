@@ -112,7 +112,7 @@ Ensure the mean_std column is  numeric.
 
 ##write final data to a file called finaldata.txt
 
-	write.table(summ,file="finaldata.txt",sep=" ",col.names= FALSE,row.names= FALSE)
+	write.table(summ,file="finaldata.txt",sep=" ",row.names= FALSE)
 
 ##Removed unwanted variables
 

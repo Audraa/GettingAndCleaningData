@@ -1,3 +1,4 @@
+"subject" "activity_description" "feature" "avg(mean_std)"
 1 "LAYING" "fBodyAcc-mean()-X" -0.9390990524
 1 "LAYING" "fBodyAcc-mean()-Y" -0.86706520518
 1 "LAYING" "fBodyAcc-mean()-Z" -0.8826668762
