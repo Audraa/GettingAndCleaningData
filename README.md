@@ -90,9 +90,10 @@ description
 	all_data2 <- select (mergedata, -activity)
 
 
-### 5 From the data set in step 4, creates a second, independent tidy data set
+### 5 From the data set in step 4, create a second, independent tidy data set
 ### with the average of each variable for each activity and each subject.
-### final result will be activity,subject,variable, avg()
+	
+	Final result will be activity,subject,variable, avg()
 
 Every column contains a different variable
 The features are measures a bit like grades and should be in a column called features
